@@ -20,7 +20,8 @@ class CSVIngestor():
                 else: 
                     data = [v.strip() for v in row]
                     obj = dict(zip(keys, data))
-                    obj['price'] = obj['price'].replace('"', '')
+                    for val in obj.values():
+                        val = val.replace('"', '')
                     obj['in_stock'] = obj['in_stock'].lower().startswith('y')
                     self.data.append(obj)
             
