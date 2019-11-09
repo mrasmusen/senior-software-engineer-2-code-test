@@ -6,6 +6,7 @@ from werkzeug.contrib.fixers import ProxyFix
 
 from config import Config
 from app.resources.products import api as products_namespace
+from app.datastore.datastore import Datastore
 
 def create_app():
 

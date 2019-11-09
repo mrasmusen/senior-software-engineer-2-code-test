@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1952347509",
+        "name": "Keyboard",
+        "brand": "Logitech",
+        "retailer": "PcWorld",
+        "price": "10.00",
+        "in_stock": true
+    },
+    {
+        "id": "24352745684",
+        "name": "Printer",
+        "brand": "Canon",
+        "retailer": "PcWorld",
+        "price": "30.00",
+        "in_stock": true
+    },
+    {
+        "id": "97854329875",
+        "name": "Lamp",
+        "brand": "IDK",
+        "retailer": "Wilko",
+        "price": "3.51",
+        "in_stock": false
+    }
+]

@@ -5,6 +5,8 @@ from flask_restplus import (
     reqparse
 )
 
+from app.datastore.datastore import datastore
+
 api = Namespace('products', description='Products')
 
 cheapest_products_parser = reqparse.RequestParser()
@@ -23,20 +25,14 @@ product_list = api.model('ProductList', {
     'products': fields.List(fields.Nested(product))
 })
 
-@api.route('/')
+@api.route('/<id>')
 class Product(Resource):
 
     @api.doc('Get single product')
     @api.marshal_with(product)
-    def get(self):
-        return {
-            'id': '1',
-            'name': 'myproduct',
-            'brand': 'mybrand',
-            'retailer': 'myretailer',
-            'price': '0.00', #very cheap
-            'in_stock': False #see price
-        }
+    def get(self, id):
+        product = datastore.get_product_by_id(id)
+        return product
 
 @api.route('/cheapest')
 class CheapestProducts(Resource):
@@ -48,13 +44,6 @@ class CheapestProducts(Resource):
 
         number = cheapest_products_parser.parse_args()['number']
         
-        return {
-            'products': [{
-                'id': '1',
-                'name': 'myproduct',
-                'brand': 'mybrand',
-                'retailer': 'myretailer',
-                'price': '0.00', #very cheap
-                'in_stock': False #see price
-            }]
-        }
+        products = datastore.get_cheapest_products(number)
+
+        return {'products': products}
