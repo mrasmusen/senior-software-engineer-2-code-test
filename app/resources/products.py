@@ -32,6 +32,8 @@ class Product(Resource):
     @api.marshal_with(product)
     def get(self, id):
         product = datastore.get_product_by_id(id)
+        if product['price'] == '':
+            product['price'] = None
         return product
 
 @api.route('/cheapest')
@@ -46,4 +48,8 @@ class CheapestProducts(Resource):
         
         products = datastore.get_cheapest_products(number)
 
+        for product in products:
+            if product['price'] == '':
+                product['price'] = None
+        
         return {'products': products}

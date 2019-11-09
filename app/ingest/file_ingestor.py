@@ -7,6 +7,8 @@ import os
 import shutil
 
 from app.ingest.json_ingestor import JsonIngestor
+from app.ingest.unzipper import Unzipper
+from app.ingest.csv_ingestor import CSVIngestor
 
 class FileIngestor():
     def __init__(self, config, files):
@@ -23,11 +25,13 @@ class FileIngestor():
         data = []
         for i in self.ingestors:
             data += i.data
+
         return data
                 
     def _ingest_files(self):
+        # TODO: some async here.
         for filepath in self.files:
-            ingestor_type = self._get_ingestor(filepath)
+            ingestor_type = get_ingestor(filepath)
 
             if ingestor_type:
                 ingestor = ingestor_type(filepath)
@@ -56,9 +60,14 @@ class FileIngestor():
                 # Check for duplicates
                 if filepath not in self.files:
                     self.files.append(filepath)
-    
-    def _get_ingestor(self, filepath):
-        if filepath.endswith('.json'):
-            return JsonIngestor
-        else:
-            return None
+
+
+def get_ingestor(filepath):
+    if filepath.endswith('.json'):
+        return JsonIngestor
+    elif filepath.endswith('.gz'):
+        return Unzipper
+    elif filepath.endswith('.csv'):
+        return CSVIngestor
+    else:
+        return None
